@@ -1,80 +1,195 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Checkpoint | {{ $title }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Bootstrap -->
+    <link href="{{url('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{url('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{url('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{url('assets/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- bootstrap-progressbar -->
+    <link href="{{url('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{{url('assets/vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{url('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <!-- Custom Theme Style -->
+    <link href="{{url('assets/build/css/custom.min.css')}}" rel="stylesheet">
+  </head>
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        @include('layouts.sidebar')
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
 
-                    </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">{{ Auth::user()->name }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li>
+                      <a href="{{ route('logout') }}"
+                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                         <i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          @csrf
+                      </form>
+                    </li>
+                  </ul>
+                </li>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+                <li role="presentation" class="dropdown">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-green">6</span>
+                  </a>
+                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                    <li>
+                      <a>
+                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a>
+                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="text-center">
+                        <a>
+                          <strong>See All Alerts</strong>
+                          <i class="fa fa-angle-right"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+        @yeild('content')
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
     </div>
-</body>
+
+    <!-- jQuery -->
+    <script src="{{url('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
+    <!-- Bootstrap -->
+    <script src="{{url('assets/vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <!-- FastClick -->
+    <script src="{{url('assets/vendors/fastclick/lib/fastclick.js')}}"></script>
+    <!-- NProgress -->
+    <script src="{{url('assets/vendors/nprogress/nprogress.js')}}"></script>
+    <!-- Chart.js -->
+    <script src="{{url('assets/vendors/Chart.js/dist/Chart.min.js')}}"></script>
+    <!-- gauge.js -->
+    <script src="{{url('assets/vendors/gauge.js/dist/gauge.min.js')}}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{{url('assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js')}}"></script>
+    <!-- iCheck -->
+    <script src="{{url('assets/vendors/iCheck/icheck.min.js')}}"></script>
+    <!-- Skycons -->
+    <script src="{{url('assets/vendors/skycons/skycons.js')}}"></script>
+    <!-- Flot -->
+    <script src="{{url('assets/vendors/Flot/jquery.flot.js')}}"></script>
+    <script src="{{url('assets/vendors/Flot/jquery.flot.pie.js')}}"></script>
+    <script src="{{url('assets/vendors/Flot/jquery.flot.time.js')}}"></script>
+    <script src="{{url('assets/vendors/Flot/jquery.flot.stack.js')}}"></script>
+    <script src="{{url('assets/vendors/Flot/jquery.flot.resize.js')}}"></script>
+    <!-- Flot plugins -->
+    <script src="{{url('assets/vendors/flot.orderbars/js/jquery.flot.orderBars.js')}}"></script>
+    <script src="{{url('assets/vendors/flot-spline/js/jquery.flot.spline.min.js')}}"></script>
+    <script src="{{url('assets/vendors/flot.curvedlines/curvedLines.js')}}"></script>
+    <!-- DateJS -->
+    <script src="{{url('assets/vendors/DateJS/build/date.js')}}"></script>
+    <!-- JQVMap -->
+    <script src="{{url('assets/vendors/jqvmap/dist/jquery.vmap.js')}}"></script>
+    <script src="{{url('assets/vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
+    <script src="{{url('assets/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{url('assets/vendors/moment/min/moment.min.js')}}"></script>
+    <script src="{{url('assets/vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{{url('assets/build/js/custom.min.js')}}"></script>
+
+  </body>
 </html>
